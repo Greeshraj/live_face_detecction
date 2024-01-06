@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+</head>
+<body>
+    <h1>Video Streaming with Face Detection</h1>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    <br>
+    <form id="userForm">
+        <label for="userName">Enter your name:</label>
+        <input type="text" id="userName" name="userName" required>
+        <button type="button" onclick="stopRecording()">Stop Recording</button>
+    </form>
+
+    <script>
+        function startRecording() {
+            fetch('/start_recording');
+        }
+
+        function stopRecording() {
+            var userName = document.getElementById('userName').value;
+            if (userName.trim() !== "") {
+                fetch('/stop_recording/' + userName, { method: 'POST' })
+                    .then(response => response.text())
+                    .then(message => alert(message))
+                    .catch(error => console.error('Error:', error));
+            } else {
+                alert('Please enter your name before stopping recording.');
+            }
+        }
+    </script>
+</body>
+</html>
